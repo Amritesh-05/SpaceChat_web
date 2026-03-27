@@ -53,4 +53,3 @@ java -cp out Main
 
 - This project is designed to run locally without external frontend frameworks.
 - Video calling depends on browser camera and microphone permissions.
-- Git is not available in the current environment, so repository publishing should be done after Git is installed.
