@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatSpace Web</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="starfield" aria-hidden="true">
+    <div class="stars stars-a"></div>
+    <div class="stars stars-b"></div>
+    <div class="stars stars-c"></div>
+    <div class="constellation constellation-orion">
+      <span class="c-star s1"></span>
+      <span class="c-star s2"></span>
+      <span class="c-star s3"></span>
+      <span class="c-star s4"></span>
+      <span class="c-star s5"></span>
+      <span class="c-star s6"></span>
+      <span class="c-star s7"></span>
+    </div>
+    <div class="constellation constellation-cassiopeia">
+      <span class="c-star s1"></span>
+      <span class="c-star s2"></span>
+      <span class="c-star s3"></span>
+      <span class="c-star s4"></span>
+      <span class="c-star s5"></span>
+    </div>
+    <div class="constellation constellation-ursa">
+      <span class="c-star s1"></span>
+      <span class="c-star s2"></span>
+      <span class="c-star s3"></span>
+      <span class="c-star s4"></span>
+      <span class="c-star s5"></span>
+      <span class="c-star s6"></span>
+      <span class="c-star s7"></span>
+    </div>
+    <div class="constellation constellation-pleiades">
+      <span class="c-star s1"></span>
+      <span class="c-star s2"></span>
+      <span class="c-star s3"></span>
+      <span class="c-star s4"></span>
+      <span class="c-star s5"></span>
+      <span class="c-star s6"></span>
+      <span class="c-star s7"></span>
+    </div>
+    <div class="constellation constellation-crux">
+      <span class="c-star s1"></span>
+      <span class="c-star s2"></span>
+      <span class="c-star s3"></span>
+      <span class="c-star s4"></span>
+      <span class="c-star s5"></span>
+    </div>
+    <div class="constellation constellation-lyra">
+      <span class="c-star s1"></span>
+      <span class="c-star s2"></span>
+      <span class="c-star s3"></span>
+      <span class="c-star s4"></span>
+    </div>
+    <div class="moon"></div>
+    <div class="shooting shooting-a"></div>
+    <div class="shooting shooting-b"></div>
+    <div class="planet-arc"></div>
+    <div class="horizon-glow"></div>
+  </div>
+  <div class="app-shell">
+    <main class="surface">
+      <section id="auth-view" class="auth-view">
+        <div class="center-header compact">
+          <h1>Space Chat</h1>
+        </div>
+        <div class="auth-card">
+          <div class="auth-tabs">
+            <button class="tab active" data-mode="create">Create Room</button>
+            <button class="tab" data-mode="join">Join Room</button>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              <span>Your name</span>
+              <input id="username" maxlength="24" placeholder="Sam">
+            </label>
+            <label id="room-name-wrap">
+              <span>Room name</span>
+              <input id="room-name" maxlength="60" placeholder="Design squad">
+            </label>
+            <label id="room-code-wrap" class="hidden">
+              <span>Room code</span>
+              <input id="room-code" maxlength="6" placeholder="AB12CD">
+            </label>
+            <label>
+              <span>Password</span>
+              <input id="password" type="password" placeholder="Optional">
+            </label>
+            <label id="max-users-wrap">
+              <span>Max users</span>
+              <input id="max-users" type="number" min="2" max="200" value="30">
+            </label>
+          </div>
+
+          <button id="auth-submit" class="primary">Enter ChatSpace</button>
+          <p id="auth-error" class="error"></p>
+        </div>
+      </section>
+
+      <section id="chat-view" class="chat-view hidden">
+        <div class="center-header compact">
+          <h1>Space Chat</h1>
+        </div>
+        <header class="topbar">
+          <div>
+            <div class="eyebrow">Room Code <span id="room-code-label" class="room-code-chip"></span></div>
+            <h2 id="room-name-label"></h2>
+            <p id="topic-label"></p>
+          </div>
+          <div class="topbar-actions">
+            <button id="copy-code-btn" class="ghost">Copy Code</button>
+            <button id="invite-btn" class="ghost">Invite</button>
+            <span id="member-count" class="pill"></span>
+            <button id="call-btn" class="ghost">Video Call</button>
+            <button id="topic-btn" class="ghost">Topic</button>
+            <button id="leave-btn" class="danger">Leave</button>
+          </div>
+        </header>
+
+        <div class="chat-layout">
+          <aside class="member-panel">
+            <div class="panel-title">Members</div>
+            <div id="members" class="members"></div>
+          </aside>
+
+          <section class="conversation-panel">
+            <div id="messages" class="messages"></div>
+            <div id="typing-label" class="typing-label"></div>
+            <div id="reply-banner" class="reply-banner hidden">
+              <div class="reply-banner-copy">
+                <strong id="reply-banner-name"></strong>
+                <span id="reply-banner-text"></span>
+              </div>
+              <button id="clear-reply-btn" class="ghost" type="button">Cancel</button>
+            </div>
+            <form id="composer" class="composer">
+              <input id="message-input" autocomplete="off" placeholder="Write a message...">
+              <button class="primary" type="submit">Send</button>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <section id="call-panel" class="call-panel hidden">
+    <div class="call-header">
+      <strong>Video Call</strong>
+      <button id="end-call-btn" class="danger">End Call</button>
+    </div>
+    <div class="videos">
+      <div class="video-tile self">
+        <video id="local-video" autoplay muted playsinline></video>
+        <span>You</span>
+      </div>
+      <div id="remote-videos" class="remote-videos"></div>
+    </div>
+  </section>
+
+  <template id="message-template">
+    <article class="message-row">
+      <div class="avatar"></div>
+      <div class="bubble-stack">
+        <div class="message-meta">
+          <strong class="sender"></strong>
+          <span class="time"></span>
+        </div>
+        <div class="bubble"></div>
+        <div class="message-actions">
+          <button data-emoji="👍">👍</button>
+          <button data-emoji="🔥">🔥</button>
+          <button data-emoji="😂">😂</button>
+          <button data-action="reply">Reply</button>
+          <button data-action="edit">Edit</button>
+          <button data-action="delete">Delete</button>
+        </div>
+        <div class="reactions"></div>
+      </div>
+    </article>
+  </template>
+
+  <script src="/app.js"></script>
+</body>
+</html>
